@@ -1,2 +1,5 @@
 http://www.skipy.ru/technics/likbez.html - как компилить
 https://cs.lmu.edu/~ray/notes/javanetexamples/ - пример кода
+
+java -classpath ./classes server.ChatServer
+java -classpath ./classes client.ChatClient localhost

@@ -14,16 +14,12 @@ public class ChatClient {
     String serverAddress;
     Scanner in;
     PrintWriter out;
-    JFrame frame = new JFrame("Chatter");
+    JFrame frame = new JFrame("Chat-client");
     JTextField textField = new JTextField(50);
     JTextArea messageArea = new JTextArea(16, 50);
 
     /**
-     * Constructs the client by laying out the GUI and registering a listener with
-     * the textfield so that pressing Return in the listener sends the textfield
-     * contents to the server. Note however that the textfield is initially NOT
-     * editable, and only becomes editable AFTER the client receives the
-     * NAMEACCEPTED message from the server.
+     *
      */
     public ChatClient(String serverAddress) {
         this.serverAddress = serverAddress;

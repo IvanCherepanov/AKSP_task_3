@@ -23,6 +23,11 @@ public class ChatServer {
         var pool = Executors.newFixedThreadPool(500);
         try (var listener = new ServerSocket(59001)) {
             while (true) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 pool.execute(new Handler(listener.accept()));
             }
         }
@@ -37,22 +42,17 @@ public class ChatServer {
         private Scanner in;
         private PrintWriter out;
 
-        /**
-         * Constructs a handler thread, squirreling away the socket. All the interesting
-         * work is done in the run method. Remember the constructor is called from the
-         * server's main method, so this has to be as short as possible.
+        /*
          */
         public Handler(Socket socket) {
             this.socket = socket;
         }
 
         /**
-         * Services this thread's client by repeatedly requesting a screen name until a
-         * unique one has been submitted, then acknowledges the name and registers the
-         * output stream for the client in a global set, then repeatedly gets inputs and
-         * broadcasts them.
+         *
          */
         public void run() {
+
             try {
                 in = new Scanner(socket.getInputStream());
                 out = new PrintWriter(socket.getOutputStream(), true);
@@ -72,9 +72,6 @@ public class ChatServer {
                     }
                 }
 
-                // Now that a successful name has been chosen, add the socket's print writer
-                // to the set of all writers so this client can receive broadcast messages.
-                // But BEFORE THAT, let everyone else know that the new person has joined!
                 out.println("NAMEACCEPTED " + name);
                 for (PrintWriter writer : writers) {
                     writer.println("MESSAGE " + name + " has joined");
@@ -83,11 +80,11 @@ public class ChatServer {
 
                 // Accept messages from this client and broadcast them.
                 while (true) {
+                    TimeUnit.SECONDS.sleep(5);
                     String input = in.nextLine();
                     if (input.toLowerCase().startsWith("/quit")) {
                         return;
                     }
-                    TimeUnit.SECONDS.sleep(15);
                     for (PrintWriter writer : writers) {
                         writer.println("MESSAGE " + name + ": " + input);
                     }
